@@ -55,7 +55,7 @@ public class LCA {
 		System.out.println("\t\tRuntime Complexity = O(1), this is due to the fact only a single comparison is done between the number of edges on G and T\n");
 		// Need to find edge missing from adjListT
 		System.out.println("\t3) Find a missing edge included in G but missing from T");
-		System.out.println("\t\tRuntime Complexity = O(V), this is due to the fact the search loops over vertices in the Adjacency List of G and verifying the edge exists in Adjacency List of T\n");
+		System.out.println("\t\tRuntime Complexity = O(E), this is due to the fact the search checks each edge in the Adjacency List of G and verifying the edge exists in Adjacency List of T\n");
 		int[] edge = findMissingEdge(adjListG, adjListT);
 		// if none run DFS from given vertex
 		System.out.println("\t4) Find the Least Common Ancestor (LCA) of the vertices that mke up the missing edge");
@@ -69,7 +69,7 @@ public class LCA {
 		System.out.println("\t\t\tRuntime Complexity = O(h) where h is height of the tree, however can be O(V) worst case, this is due to the fact height may be an almost linear tree on all the vertices\n");
 		System.out.println("\t\t\tPath that forms a cycle: " + Arrays.toString(findLCA(edge[0], edge[1])) + "\n");
 		
-		System.out.println("Total Runtime Complexity = O(V + V + V + V) = O(4V) = O(V)");
+		System.out.println("Total Runtime Complexity = O(V + E + V + V) = O(3V + E) = O(V + E)");
 		
 	}
 	
