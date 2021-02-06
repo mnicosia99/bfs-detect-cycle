@@ -7,7 +7,7 @@ import java.util.Collections;
 import java.util.List;
 import java.util.Queue;
 
-public class LCA {
+public class DetectCycle {
 
 	static boolean[] visited;
 	static int[] depth;
@@ -49,7 +49,7 @@ public class LCA {
 		// find Spanning Tree using BFS given Adjacency List defining Graph G 
 		System.out.println("\t1) Find a Spanning Tree T using BFS algorithm, given Graph G Adjacency List and a source vertex");
 		List<List<Integer>> adjListT = BFS(adjListG, 1, nbrVertices);
-		System.out.println("\t\tGraph T, created running BFS(G): " + adjListT + "\n");
+		System.out.println("\t\tGraph T, created running BFS(G, src): " + adjListT + "\n");
 		System.out.println("\t\tRuntime Complexity = O(V), this is due to the fact that each vertex is only visited once.\n");
 		System.out.println("\t2) If no missing edges, there are no cycles");
 		System.out.println("\t\tRuntime Complexity = O(1), this is due to the fact only a single comparison is done between the number of edges on G and T\n");
