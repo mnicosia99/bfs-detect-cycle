@@ -13,6 +13,22 @@ public class DetectCycle {
 	static int[] depth;
 	static int[] parent;
 
+	// Node to store vertex and its parent info in BFS
+	static class Node {
+		int v;
+		Node parent;
+	
+		Node(int v, Node parent) {
+			this.v = v;
+			this.parent = parent;
+		}
+		
+		public String toString() {
+			String parentPath = this.parent == null ? "<null>" : this.parent.toString();
+			return this.v + " <-- " + parentPath;
+		}
+	}
+
 	public static void main(String[] args) {
 		List<List<Integer>> adjListG = new ArrayList<>();
 		adjListG.add(new ArrayList<Integer>());
@@ -47,7 +63,7 @@ public class DetectCycle {
 		System.out.println("\tGraph G: " + adjListG + "\n");
 		
 		// find Spanning Tree using BFS given Adjacency List defining Graph G 
-		System.out.println("\t1) Find a Spanning Tree T using BFS algorithm, given Graph G Adjacency List and a source vertex");
+		System.out.println("\t1) Find a Spanning Tree T using BFS algorithm, given Graph G Adjacency List and an arbitrary source vertex");
 		List<List<Integer>> adjListT = BFS(adjListG, 1, nbrVertices);
 		System.out.println("\t\tGraph T, created running BFS(G, src): " + adjListT + "\n");
 		System.out.println("\t\tRuntime Complexity = O(V), this is due to the fact that each vertex is only visited once.\n");
@@ -55,21 +71,22 @@ public class DetectCycle {
 		System.out.println("\t\tRuntime Complexity = O(1), this is due to the fact only a single comparison is done between the number of edges on G and T\n");
 		// Need to find edge missing from adjListT
 		System.out.println("\t3) Find a missing edge included in G but missing from T");
-		System.out.println("\t\tRuntime Complexity = O(E), this is due to the fact the search checks each edge in the Adjacency List of G and verifying the edge exists in Adjacency List of T\n");
+		System.out.println("\t\tRuntime Complexity = O(E), this is due to the fact the search traverses the edges in the Adjacency List\n");
 		int[] edge = findMissingEdge(adjListG, adjListT);
 		// if none run DFS from given vertex
-		System.out.println("\t4) Find the Least Common Ancestor (LCA) of the vertices that mke up the missing edge");
-		System.out.println("\t\tRuntime Complexity = O(V + V) = O(V), this is due to the fact data structure is created once and than the search is performed once\n");
-		System.out.println("\t\ta) Generate data structure to maintain depth and parent of each vertex used by LCA");
-		System.out.println("\t\t\tRuntime Complexity = O(V), this is due to the fact DFS is run visiting each vertex once starting at the source vertex and identifying the depth and parent for each vertex\n");
+		System.out.println("\t4) Find the Least Common Ancestor (LCA) of the vertices that make up the missing edge");
+		System.out.println("\t\tRuntime Complexity = O(E), this is due to the fact that the edges are traversed to find the LCA\n");
+		// System.out.println("\t\tRuntime Complexity = O(V + V) = O(V), this is due to the fact data structure is created once and than the search is performed once\n");
+		// System.out.println("\t\ta) Generate data structure to maintain depth and parent of each vertex used by LCA");
+		// System.out.println("\t\t\tRuntime Complexity = O(V), this is due to the fact DFS is run visiting each vertex once starting at the source vertex and identifying the depth and parent for each vertex\n");
 		
 		DFS(adjListT, 1);
 		// get LCA for each vertex in the missing edge to identify cycle
-		System.out.println("\t\tb) Get path from vertices of missing edge to the LCA");
-		System.out.println("\t\t\tRuntime Complexity = O(h) where h is height of the tree, however can be O(V) worst case, this is due to the fact height may be an almost linear tree on all the vertices\n");
+		// System.out.println("\t\tb) Get path from vertices of missing edge to the LCA");
+		// System.out.println("\t\t\tRuntime Complexity = O(h) where h is height of the tree, however can be O(V) worst case, this is due to the fact height may be an almost linear tree on all the vertices\n");
 		System.out.println("\t\t\tPath that forms a cycle: " + Arrays.toString(findLCA(edge[0], edge[1])) + "\n");
 		
-		System.out.println("Total Runtime Complexity = O(V + E + V + V) = O(3V + E) = O(V + E)");
+		System.out.println("Total Runtime Complexity = O(V + E + E) = O(V + 2E) = O(V + E)");
 		
 	}
 	
