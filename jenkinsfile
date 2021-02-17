@@ -19,6 +19,7 @@ node {
     
           // Run the maven build
           sh "mvn clean package"
+          sh "ls -ltra target"
     
         } 
         rtUpload (
@@ -38,26 +39,26 @@ node {
                  ]
             }'''
         )
-        rtUpload (
-            serverId: 'local-artifactory',
-            buildName: 'my-app-linux',
-            spec: '''{
-                  "files": [
-                    {
-                      "pattern": "target/bfs-detect-cycle-16.jar",
-                      "target": "maven-local/net/nicosia/bfs-detect-cycle/16/bfs-detect-cycle-16.jar"
-                    },
-                    {
-                      "pattern": "pom.xml",
-                      "target": "maven-local/net/nicosia/bfs-detect-cycle/16/pom.xml"
-                    }
-                 ]
-            }'''
-        )
-        rtPublishBuildInfo (
-            serverId: 'local-artifactory',
-            buildName: 'my-app-linux'
-        )
+        //rtUpload (
+        //    serverId: 'local-artifactory',
+        //    buildName: 'my-app-linux',
+        //    spec: '''{
+        //          "files": [
+        //            {
+        //              "pattern": "target/bfs-detect-cycle-16.jar",
+        //              "target": "maven-local/net/nicosia/bfs-detect-cycle/16/bfs-detect-cycle-16.jar"
+        //            },
+        //            {
+        //              "pattern": "pom.xml",
+        //              "target": "maven-local/net/nicosia/bfs-detect-cycle/16/pom.xml"
+        //            }
+        //         ]
+        //    }'''
+        //)
+        //rtPublishBuildInfo (
+        //    serverId: 'local-artifactory',
+        //    buildName: 'my-app-linux'
+        //)
     }
     
     stage('Build Windows App') {
@@ -68,36 +69,28 @@ node {
             spec: '''{
                   "files": [
                     {
-                      "pattern": "target/bfs-detect-cycle-sources-16.jar",
-                      "target": "generic-local/net/nicosia/bfs-detect-cycle/16/bfs-detect-cycle-sources-16.jar"
-                    },
-                    {
-                      "pattern": "pom.xml",
-                      "target": "maven-local/net/nicosia/bfs-detect-cycle/16/pom.xml"
+                      "pattern": "target/bfs-detect-cycle-16-sources.jar",
+                      "target": "generic-local/net/nicosia/bfs-detect-cycle/16/bfs-detect-cycle-16-sources.jar"
                     }
                  ]
             }'''
         )
-        rtUpload (
-            serverId: 'local-artifactory',
-            buildName: 'my-app-windows',
-            spec: '''{
-                  "files": [
-                    {
-                      "pattern": "target/bfs-detect-cycle-sources-16.jar",
-                      "target": "generic-local/net/nicosia/bfs-detect-cycle/16/bfs-detect-cycle-sources-16.jar"
-                    },
-                    {
-                      "pattern": "pom.xml",
-                      "target": "maven-local/net/nicosia/bfs-detect-cycle/16/pom.xml"
-                    }
-                 ]
-            }'''
-        )
-        rtPublishBuildInfo (
-            serverId: 'local-artifactory',
-            buildName: 'my-app-windows'
-        )
+        //rtUpload (
+        //    serverId: 'local-artifactory',
+        //    buildName: "my-app-windows/${BUILD_NUMBER}",
+        //    spec: '''{
+        //          "files": [
+        //            {
+        //              "pattern": "target/bfs-detect-cycle-16-sources.jar",
+        //              "target": "generic-local/net/nicosia/bfs-detect-cycle/16/bfs-detect-cycle-16-sources.jar"
+        //            }
+        //         ]
+        //    }'''
+        //)
+        //rtPublishBuildInfo (
+        //    serverId: 'local-artifactory',
+        //    buildName: 'my-app-windows'
+        //)
     }
      
     
