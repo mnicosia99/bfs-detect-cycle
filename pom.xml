@@ -2,7 +2,7 @@
   <modelVersion>4.0.0</modelVersion>
   <groupId>net.nicosia</groupId>
   <artifactId>bfs-detect-cycle</artifactId>
-  <version>0.0.1</version>
+  <version>16</version>
 
   <distributionManagement>
     <repository>
