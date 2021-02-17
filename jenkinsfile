@@ -1,0 +1,113 @@
+node {
+    
+    stage('SWCM') {
+        git branch: 'dev', credentialsId: 'mnicosia99', url: 'https://github.com/mnicosia99/bfs-detect-cycle.git'
+    }
+    
+    stage('Build Linux App') {
+        withMaven(
+                // Maven installation declared in the Jenkins "Global Tool Configuration"
+                //maven: 'maven-3', // (1)
+                // Use `$WORKSPACE/.repository` for local repository folder to avoid shared repositories
+                //mavenLocalRepo: '.repository', // (2)
+                // Maven settings.xml file defined with the Jenkins Config File Provider Plugin
+                // We recommend to define Maven settings.xml globally at the folder level using
+                // navigating to the folder configuration in the section "Pipeline Maven Configuration / Override global Maven configuration"
+                // or globally to the entire master navigating to  "Manage Jenkins / Global Tools Configuration"
+                //mavenSettingsConfig: 'my-maven-settings' // (3)
+        ) {
+    
+          // Run the maven build
+          sh "mvn clean package"
+    
+        } 
+        rtUpload (
+            serverId: 'local-artifactory',
+            buildName: 'final',
+            module: "my-app-linux/${BUILD_NUMBER}",
+            spec: '''{
+                  "files": [
+                    {
+                      "pattern": "target/bfs-detect-cycle-16.jar",
+                      "target": "maven-local/net/nicosia/bfs-detect-cycle/16/bfs-detect-cycle-16.jar"
+                    },
+                    {
+                      "pattern": "pom.xml",
+                      "target": "maven-local/net/nicosia/bfs-detect-cycle/16/pom.xml"
+                    }
+                 ]
+            }'''
+        )
+        rtUpload (
+            serverId: 'local-artifactory',
+            buildName: 'my-app-linux',
+            spec: '''{
+                  "files": [
+                    {
+                      "pattern": "target/bfs-detect-cycle-16.jar",
+                      "target": "maven-local/net/nicosia/bfs-detect-cycle/16/bfs-detect-cycle-16.jar"
+                    },
+                    {
+                      "pattern": "pom.xml",
+                      "target": "maven-local/net/nicosia/bfs-detect-cycle/16/pom.xml"
+                    }
+                 ]
+            }'''
+        )
+        rtPublishBuildInfo (
+            serverId: 'local-artifactory',
+            buildName: 'my-app-linux'
+        )
+    }
+    
+    stage('Build Windows App') {
+        rtUpload (
+            serverId: 'local-artifactory',
+            buildName: 'final',
+            module: "my-app-windows/${BUILD_NUMBER}",
+            spec: '''{
+                  "files": [
+                    {
+                      "pattern": "target/bfs-detect-cycle-sources-16.jar",
+                      "target": "generic-local/net/nicosia/bfs-detect-cycle/16/bfs-detect-cycle-sources-16.jar"
+                    },
+                    {
+                      "pattern": "pom.xml",
+                      "target": "maven-local/net/nicosia/bfs-detect-cycle/16/pom.xml"
+                    }
+                 ]
+            }'''
+        )
+        rtUpload (
+            serverId: 'local-artifactory',
+            buildName: 'my-app-windows',
+            spec: '''{
+                  "files": [
+                    {
+                      "pattern": "target/bfs-detect-cycle-sources-16.jar",
+                      "target": "generic-local/net/nicosia/bfs-detect-cycle/16/bfs-detect-cycle-sources-16.jar"
+                    },
+                    {
+                      "pattern": "pom.xml",
+                      "target": "maven-local/net/nicosia/bfs-detect-cycle/16/pom.xml"
+                    }
+                 ]
+            }'''
+        )
+        rtPublishBuildInfo (
+            serverId: 'local-artifactory',
+            buildName: 'my-app-windows'
+        )
+    }
+     
+    
+    stage('Publish Aggregate Build Info') {
+
+        // Publish the aggregated build-info to Artifactory.
+        rtPublishBuildInfo (
+            serverId: 'local-artifactory',
+            buildName: 'final'
+        )
+    }
+    
+}
