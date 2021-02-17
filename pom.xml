@@ -4,6 +4,19 @@
   <artifactId>bfs-detect-cycle</artifactId>
   <version>0.0.1-SNAPSHOT</version>
 
+  <distributionManagement>
+    <repository>
+      <id>mavenLocal</id>
+      <name>Maven Local</name>
+      <url>http://localhost:8082/artifactory/maven-local/</url>
+    </repository>
+    <snapshotRepository>
+      <id>mavenLocal</id>
+      <name>Maven Local</name>
+      <url>http://localhost:8082/artifactory/maven-local/</url>
+    </snapshotRepository>
+  </distributionManagement>
+
   <properties>
      <maven.compiler.source>11</maven.compiler.source>
      <maven.compiler.target>11</maven.compiler.target>
